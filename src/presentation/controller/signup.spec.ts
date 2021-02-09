@@ -32,7 +32,7 @@ describe('SignUp Controller', () => {
       body: {
         email: 'foo@example.com',
         password: 'password',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 
@@ -47,7 +47,7 @@ describe('SignUp Controller', () => {
       body: {
         name: 'John Doe',
         password: 'password',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 
@@ -62,7 +62,7 @@ describe('SignUp Controller', () => {
       body: {
         name: 'John Doe',
         email: 'foo@example',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 
@@ -83,7 +83,23 @@ describe('SignUp Controller', () => {
 
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirm'))
+    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
+  })
+
+  test('Should return 400 if password confirmation fails', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'John Doe',
+        email: 'foo@example',
+        password: 'password',
+        passwordConfirmation: 'wrong_password'
+      }
+    }
+
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
   })
 
   test('Should return 400 if invalid email is provided', () => {
@@ -94,7 +110,7 @@ describe('SignUp Controller', () => {
         name: 'John Doe',
         email: 'invalid_email@example',
         password: 'password',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 
@@ -111,7 +127,7 @@ describe('SignUp Controller', () => {
         name: 'John Doe',
         email: 'foo@example',
         password: 'password',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 
@@ -129,7 +145,7 @@ describe('SignUp Controller', () => {
         name: 'John Doe',
         email: 'foo@example',
         password: 'password',
-        passwordConfirm: 'password'
+        passwordConfirmation: 'password'
       }
     }
 

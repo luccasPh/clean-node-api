@@ -3,18 +3,18 @@ import { LogErrorRepository } from '../../data/protocols/log-error-repository'
 
 export class LogControllerDecorator implements Controller {
   private readonly controller: Controller
-  private readonly logErrorRepositoryS: LogErrorRepository
+  private readonly logErrorRepository: LogErrorRepository
 
-  constructor (controller: Controller, logErrorRepositoryS: LogErrorRepository) {
+  constructor (controller: Controller, logErrorRepository: LogErrorRepository) {
     this.controller = controller
-    this.logErrorRepositoryS = logErrorRepositoryS
+    this.logErrorRepository = logErrorRepository
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const httpResponse = await this.controller.handle(httpRequest)
     // eslint-disable-next-line no-empty
     if (httpResponse.statusCode === 500) {
-      await this.logErrorRepositoryS.log(httpResponse.body.stack)
+      await this.logErrorRepository.logError(httpResponse.body.stack)
     }
     return httpResponse
   }

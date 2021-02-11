@@ -1,5 +1,5 @@
 import { Collection, MongoClient } from 'mongodb'
-import unknown from '../../../../../jest.integration.config'
+import unknown from '../../../../../jest-integration-config'
 
 export const MongoHelper = {
   client: unknown as MongoClient,

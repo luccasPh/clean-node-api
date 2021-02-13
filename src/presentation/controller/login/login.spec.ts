@@ -1,11 +1,11 @@
 import { MissingParamError, ServerError, UnauthorizedError } from '../../errors'
-import { HttpRequest, Authentication } from './login-protocols'
+import { HttpRequest, Authentication, AuthenticationModel } from './login-protocols'
 import { LoginController } from './login'
 import { Validation } from '../signup/signup-protocols'
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (email: string, password: string): Promise<string> {
+    async auth (authentication: AuthenticationModel): Promise<string> {
       return await new Promise(resolve => resolve('access_token'))
     }
   }
@@ -51,7 +51,10 @@ describe('Login Controller', () => {
     const isValidSpy = jest.spyOn(authenticationStub, 'auth')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(isValidSpy).toHaveBeenCalledWith('foo@example.com', 'password')
+    expect(isValidSpy).toHaveBeenCalledWith({
+      email: 'foo@example.com',
+      password: 'password'
+    })
   })
 
   test('Should return 401 if invalid credentials are provided', async () => {

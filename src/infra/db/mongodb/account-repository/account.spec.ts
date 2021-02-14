@@ -60,4 +60,20 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadByEmail('foo@example.com')
     expect(account).toBeNull()
   })
+
+  test('Should update the account accessToken on updateAccessToken success', async () => {
+    const sut = makeSut()
+    const result = await accountCollection.insertOne({
+      name: 'John Doe',
+      email: 'foo@example.com',
+      password: 'password'
+    })
+    const accountInsert = result.ops[0]
+    expect(accountInsert.accessToken).toBeFalsy()
+
+    await sut.updateAccessToken(accountInsert._id, 'any_token')
+    const accountFind = await accountCollection.findOne({ _id: accountInsert._id })
+    expect(accountFind).toBeTruthy()
+    expect(accountFind.accessToken).toBe('any_token')
+  })
 })

@@ -26,7 +26,11 @@ export const MongoHelper = {
   },
 
   map: (collection: any): any => {
-    const { _id, ...collectionWithoutId } = collection
-    return Object.assign({}, collectionWithoutId, { id: _id })
+    if (collection) {
+      const { _id, ...collectionWithoutId } = collection
+      return Object.assign({}, collectionWithoutId, { id: _id })
+    } else {
+      return null
+    }
   }
 }

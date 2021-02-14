@@ -54,4 +54,10 @@ describe('Account Mongo Repository', () => {
       expect(account.password).toBe('password')
     }
   })
+
+  test('Should return null if on loadByEmail fails', async () => {
+    const sut = makeSut()
+    const account = await sut.loadByEmail('foo@example.com')
+    expect(account).toBeNull()
+  })
 })

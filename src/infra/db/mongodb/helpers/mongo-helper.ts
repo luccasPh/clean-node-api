@@ -1,9 +1,8 @@
 import { Collection, MongoClient } from 'mongodb'
-import unknown from '../../../../../jest-integration-config'
 
 export const MongoHelper = {
-  client: unknown as MongoClient,
-  uri: unknown as string,
+  client: null as unknown as any,
+  uri: null as unknown as string,
 
   async connect (uri: string): Promise<void> {
     this.uri = uri
@@ -15,14 +14,19 @@ export const MongoHelper = {
 
   async disconnect (): Promise<void> {
     await this.client.close()
-    this.client = unknown
+    this.client = null
   },
 
   async getCollection (name: string): Promise<Collection> {
-    if (!this.client.isConnected) {
+    if (this.client) {
+      if (!this.client.isConnected) {
+        await this.connect(this.uri)
+      }
+      return this.client.db().collection(name)
+    } else {
       await this.connect(this.uri)
+      return this.client.db().collection(name)
     }
-    return this.client.db().collection(name)
   },
 
   map: (collection: any): any => {

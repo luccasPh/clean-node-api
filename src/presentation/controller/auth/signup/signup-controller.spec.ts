@@ -1,5 +1,5 @@
 import { SignUpController } from './signup-controller'
-import { EmailInUseError, MissingParamError, ServerError } from '../../errors'
+import { EmailInUseError, MissingParamError, ServerError } from '../../../errors'
 import { AddAccount, AddAccountModel, AccountModel, HttpRequest, Validation } from './signup-protocols-controller'
 import { Authentication, AuthenticationModel } from '../login/login-protocols-controller'
 

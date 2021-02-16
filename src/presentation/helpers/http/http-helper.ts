@@ -7,6 +7,12 @@ export const badRequest = (error: MissingParamError): HttpResponse => ({
 
 })
 
+export const forbidden = (error: MissingParamError): HttpResponse => ({
+  statusCode: 403,
+  body: error
+
+})
+
 export const unauthorized = (): HttpResponse => ({
   statusCode: 401,
   body: new UnauthorizedError()

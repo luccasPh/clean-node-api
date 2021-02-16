@@ -3,5 +3,5 @@ node_modules/.yarn-integrity
 dist
 coverage
 globalConfig.json
-data
+mongo
 .vscode

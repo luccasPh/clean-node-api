@@ -1,7 +1,7 @@
 export interface AddSurveyModel {
   question: string
   answers: Array<{
-    image: string
+    image?: string
     answer: string
   }>
 }

@@ -1,5 +1,5 @@
 import { AddSurvey, Controller, HttpRequest, HttpResponse, Validation } from './add-survey-controller-protocols'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, noContent, serverError } from '../../../helpers/http/http-helper'
 
 export class AddSurveyController implements Controller {
   private readonly validation: Validation
@@ -21,10 +21,7 @@ export class AddSurveyController implements Controller {
         question,
         answers
       })
-      return await new Promise(resolve => resolve({
-        statusCode: 400,
-        body: 'any'
-      }))
+      return noContent()
     } catch (error) {
       return serverError(error)
     }

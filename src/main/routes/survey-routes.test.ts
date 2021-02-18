@@ -77,4 +77,56 @@ describe('Survey Routes', () => {
       .get('/api/surveys')
       .expect(403)
   })
+
+  test('Should return 200 on load surveys with valid accessToken', async () => {
+    const account = await accountCollection.insertOne({
+      name: 'John Doe',
+      email: 'foo@example.com',
+      password: 'password'
+    })
+    const id = account.ops[0]._id
+    const accessToken = sign({ id }, env.jwtSecretKey)
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+    await surveyCollection.insertMany([{
+      question: 'any_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer'
+      }, {
+        answer: 'other_answer'
+      }],
+      date: new Date()
+    }])
+    await request(app)
+      .get('/api/surveys')
+      .set('x-access-token', accessToken)
+      .expect(200)
+  })
+
+  test('Should return 204 on load surveys with valid accessToken', async () => {
+    const account = await accountCollection.insertOne({
+      name: 'John Doe',
+      email: 'foo@example.com',
+      password: 'password'
+    })
+    const id = account.ops[0]._id
+    const accessToken = sign({ id }, env.jwtSecretKey)
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+    await request(app)
+      .get('/api/surveys')
+      .set('x-access-token', accessToken)
+      .expect(204)
+  })
 })

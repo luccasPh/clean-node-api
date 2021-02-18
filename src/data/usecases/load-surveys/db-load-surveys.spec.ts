@@ -1,7 +1,8 @@
 import MockDate from 'mockdate'
+
+import { SurveyModel } from '@/domain/models/survey'
+import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-survey-repository'
 import { DbLoadSurveys } from './db-load-surveys'
-import { LoadSurveysRepository } from '../../protocols/db/survey/load-survey-repository'
-import { SurveyModel } from '../../../domain/models/survey'
 
 const makeLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {

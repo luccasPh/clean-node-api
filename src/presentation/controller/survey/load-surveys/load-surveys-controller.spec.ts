@@ -50,4 +50,20 @@ describe('LoadSurveys Controller', () => {
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
   })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual([{
+      id: 'valid_id',
+      question: 'valid_question',
+      answers: [{
+        image: 'valid_image',
+        answer: 'valid_answer'
+
+      }],
+      date: new Date()
+    }])
+  })
 })

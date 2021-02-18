@@ -41,4 +41,40 @@ describe('DbLoadSurveys Usecase', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
+  test('Should return a list of Surveys on success', async () => {
+    const { sut } = makeSut()
+    const surveys = await sut.load()
+    expect(surveys).toEqual([{
+      id: 'valid_id',
+      question: 'valid_question',
+      answers: [{
+        image: 'valid_image',
+        answer: 'valid_answer'
+
+      }],
+      date: new Date()
+    }])
+  })
+
+  // test('Should return null if LoadSurveysRepository return null', async () => {
+  //   const { sut, loadSurveysRepositoryStub } = makeSut()
+  //   jest.spyOn(loadSurveysRepositoryStub, 'loadByToken').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+  //   const account = await sut.load('any_token', 'any_role')
+  //   expect(account).toBeNull()
+  // })
+
+  // test('Should throw if Decrypter throws', async () => {
+  //   const { sut, decrypterStub } = makeSut()
+  //   jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+  //   const promise = sut.load('any_token', 'any_role')
+  //   await expect(promise).rejects.toThrow()
+  // })
+
+  // test('Should throw if LoadSurveysRepository throws', async () => {
+  //   const { sut, loadSurveysRepositoryStub } = makeSut()
+  //   jest.spyOn(loadSurveysRepositoryStub, 'loadByToken').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+  //   const promise = sut.load('any_token', 'any_role')
+  //   await expect(promise).rejects.toThrow()
+  // })
 })

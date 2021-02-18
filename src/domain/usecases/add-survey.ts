@@ -4,6 +4,7 @@ export interface AddSurveyModel {
     image?: string
     answer: string
   }>
+  date: Date
 }
 
 export interface AddSurvey {

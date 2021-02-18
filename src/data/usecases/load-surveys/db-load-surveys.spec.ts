@@ -57,24 +57,10 @@ describe('DbLoadSurveys Usecase', () => {
     }])
   })
 
-  // test('Should return null if LoadSurveysRepository return null', async () => {
-  //   const { sut, loadSurveysRepositoryStub } = makeSut()
-  //   jest.spyOn(loadSurveysRepositoryStub, 'loadByToken').mockReturnValueOnce(new Promise(resolve => resolve(null)))
-  //   const account = await sut.load('any_token', 'any_role')
-  //   expect(account).toBeNull()
-  // })
-
-  // test('Should throw if Decrypter throws', async () => {
-  //   const { sut, decrypterStub } = makeSut()
-  //   jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-  //   const promise = sut.load('any_token', 'any_role')
-  //   await expect(promise).rejects.toThrow()
-  // })
-
-  // test('Should throw if LoadSurveysRepository throws', async () => {
-  //   const { sut, loadSurveysRepositoryStub } = makeSut()
-  //   jest.spyOn(loadSurveysRepositoryStub, 'loadByToken').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-  //   const promise = sut.load('any_token', 'any_role')
-  //   await expect(promise).rejects.toThrow()
-  // })
+  test('Should throw if LoadSurveysRepository throws', async () => {
+    const { sut, loadSurveysRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
+  })
 })

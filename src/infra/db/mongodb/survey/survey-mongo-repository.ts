@@ -17,12 +17,12 @@ export class SurveyMongoRepository implements
   async loadAll (): Promise<SurveyModel[]> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const surveys = await surveyCollection.find().toArray()
-    return surveys
+    return MongoHelper.mapArray(surveys)
   }
 
   async loadById (id: string): Promise<SurveyModel | null> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const survey = await surveyCollection.findOne({ _id: id })
-    return survey
+    return survey && MongoHelper.mapObject(survey)
   }
 }

@@ -4,10 +4,12 @@ import { Router } from 'express'
 import { adapterRoute } from '@/main/adapters/express-route-adapter'
 import { makeAddSurveyController } from '@/main/factories/controllers/survey/add-survey/add-survey-controller-factory'
 import { makeLoadSurveysController } from '@/main/factories/controllers/survey/load-surveys/load-surveys-controller-factory'
+import { makeSaveSurveyResultController } from '@/main/factories/controllers/survey/save-survey-result/save-survey-result-controller-factory'
 import { adminAuth } from '@/main/middlewares/admin-auth'
 import { auth } from '@/main/middlewares/auth'
 
 export default (router: Router): void => {
   router.post('/surveys', adminAuth, adapterRoute(makeAddSurveyController()))
   router.get('/surveys', auth, adapterRoute(makeLoadSurveysController()))
+  router.put('/surveys/:surveyId/results', auth, adapterRoute(makeSaveSurveyResultController()))
 }

@@ -130,4 +130,13 @@ describe('Survey Routes', () => {
       .set('x-access-token', accessToken)
       .expect(204)
   })
+
+  test('Should return 403 on save survey result without accessToken', async () => {
+    await request(app)
+      .put('/api/surveys/any_id/results')
+      .send({
+        answer: 'any_answer'
+      })
+      .expect(403)
+  })
 })

@@ -10,7 +10,7 @@ const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
         accountId: 'any_accountId',
         surveyId: 'any_surveyId',
         answer: 'any_answer',
-        data: new Date()
+        date: new Date()
       }))
     }
   }
@@ -21,7 +21,7 @@ const makeSurveyResultData = (): SaveSurveyResultModel => ({
   accountId: 'any_accountId',
   surveyId: 'any_surveyId',
   answer: 'any_answer',
-  data: new Date()
+  date: new Date()
 })
 
 interface SutTypes {
@@ -72,7 +72,7 @@ describe('DbSaveSurveyResult UseCase', () => {
       accountId: 'any_accountId',
       surveyId: 'any_surveyId',
       answer: 'any_answer',
-      data: new Date()
+      date: new Date()
     })
   })
 })

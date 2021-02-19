@@ -6,7 +6,7 @@ export class LogMongoRepository implements LogErrorRepository {
     const logCollection = await MongoHelper.getCollection('logs')
     await logCollection.insertOne({
       stack,
-      data: new Date()
+      date: new Date()
     })
   }
 }

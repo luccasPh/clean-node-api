@@ -8,5 +8,5 @@ export interface SaveSurveyResultModel {
 }
 
 export interface SaveSurveyResult {
-  save: (data: SaveSurveyResultModel) => Promise<SurveyResultModel | null>
+  save: (data: SaveSurveyResultModel) => Promise<SurveyResultModel>
 }

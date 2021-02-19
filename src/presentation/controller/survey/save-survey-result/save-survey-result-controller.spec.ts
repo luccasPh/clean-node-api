@@ -3,6 +3,7 @@ import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 import { InvalidParamError, ServerError } from '@/presentation/errors'
 import {
+  HttpRequest,
   LoadSurveyById,
   SaveSurveyResult,
   SaveSurveyResultModel,
@@ -45,6 +46,16 @@ const makeSaveSurveyResult = (): SaveSurveyResult => {
   return new SaveSurveyResultStub()
 }
 
+const makeFakeRequest = (): HttpRequest => ({
+  params: {
+    surveyId: 'survey_id'
+  },
+  body: {
+    answer: 'valid_answer'
+  },
+  accountId: 'account_id'
+})
+
 interface SutTypes {
   sut: SaveSurveyResultController
   loadSurveyByIdStub: LoadSurveyById
@@ -74,30 +85,14 @@ describe('SaveSurveyResult Controller', () => {
   test('Should call LoadSurveyById with correct values', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
-    await sut.handle({
-      params: {
-        surveyId: 'survey_id'
-      },
-      body: {
-        answer: 'valid_answer'
-      },
-      accountId: 'account_id'
-    })
+    await sut.handle(makeFakeRequest())
     expect(loadByIdSpy).toHaveBeenCalledWith('survey_id')
   })
 
   test('Should returns 403 if LoadSurveyById returns null', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(new Promise(resolve => resolve(null)))
-    const httpResponse = await sut.handle({
-      params: {
-        surveyId: 'survey_id'
-      },
-      body: {
-        answer: 'valid_answer'
-      },
-      accountId: 'account_id'
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(403)
     expect(httpResponse.body).toEqual(new InvalidParamError('surveyId'))
   })
@@ -105,15 +100,7 @@ describe('SaveSurveyResult Controller', () => {
   test('Should returns 500 if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const httpResponse = await sut.handle({
-      params: {
-        surveyId: 'survey_id'
-      },
-      body: {
-        answer: 'valid_answer'
-      },
-      accountId: 'account_id'
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
@@ -136,15 +123,7 @@ describe('SaveSurveyResult Controller', () => {
   test('Should call SaveSurveyResult with correct values', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
     const saveSpy = jest.spyOn(saveSurveyResultStub, 'save')
-    await sut.handle({
-      params: {
-        surveyId: 'survey_id'
-      },
-      body: {
-        answer: 'valid_answer'
-      },
-      accountId: 'account_id'
-    })
+    await sut.handle(makeFakeRequest())
     expect(saveSpy).toHaveBeenCalledWith({
       surveyId: 'survey_id',
       accountId: 'account_id',
@@ -156,16 +135,21 @@ describe('SaveSurveyResult Controller', () => {
   test('Should returns 500 if LoadSurveyById throws', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
     jest.spyOn(saveSurveyResultStub, 'save').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const httpResponse = await sut.handle({
-      params: {
-        surveyId: 'survey_id'
-      },
-      body: {
-        answer: 'valid_answer'
-      },
-      accountId: 'account_id'
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should returns 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      surveyId: 'survey_id',
+      accountId: 'account_id',
+      answer: 'valid_answer',
+      date: new Date()
+    })
   })
 })

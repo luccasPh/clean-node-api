@@ -1,12 +1,12 @@
-export const loginPath = {
+export const signUpPath = {
   post: {
     tags: ['Auth'],
-    summary: 'Endpoint para autenticar um usuário',
+    summary: 'Endpoint para criar conta de um usuário',
     requestBody: {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/login'
+            $ref: '#/schemas/signup'
           }
         }
       }
@@ -27,8 +27,8 @@ export const loginPath = {
       400: {
         $ref: '#/components/badRequest'
       },
-      401: {
-        $ref: '#/components/unauthorized'
+      403: {
+        $ref: '#/components/forbidden'
       },
       500: {
         $ref: '#/components/serverError'

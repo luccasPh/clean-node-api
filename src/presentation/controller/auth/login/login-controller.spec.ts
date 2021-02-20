@@ -1,11 +1,11 @@
 import { MissingParamError, ServerError, UnauthorizedError } from '@/presentation/errors'
 import { Validation, HttpRequest } from '@/presentation/protocols'
 import { LoginController } from './login-controller'
-import { Authentication, AuthenticationModel } from './login-controller-protocols'
+import { Authentication, AuthenticationParams } from './login-controller-protocols'
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationModel): Promise<string> {
+    async auth (authentication: AuthenticationParams): Promise<string> {
       return await new Promise(resolve => resolve('access_token'))
     }
   }

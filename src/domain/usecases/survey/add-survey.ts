@@ -1,4 +1,4 @@
-export interface AddSurveyModel {
+export interface AddSurveyParams {
   question: string
   answers: Array<{
     image?: string
@@ -8,5 +8,5 @@ export interface AddSurveyModel {
 }
 
 export interface AddSurvey {
-  add: (survey: AddSurveyModel) => Promise<void>
+  add: (survey: AddSurveyParams) => Promise<void>
 }

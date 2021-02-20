@@ -6,7 +6,7 @@ import { LoadSurveyByIdRepository, SurveyModel } from './db-load-survey-by-id-pr
 const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
     async loadById (id: string): Promise<SurveyModel | null> {
-      return await new Promise(resolve => resolve({
+      return await Promise.resolve({
         id: 'valid_id',
         question: 'valid_question',
         answers: [{
@@ -15,7 +15,7 @@ const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
 
         }],
         date: new Date()
-      }))
+      })
     }
   }
   return new LoadSurveyByIdRepositoryStub()

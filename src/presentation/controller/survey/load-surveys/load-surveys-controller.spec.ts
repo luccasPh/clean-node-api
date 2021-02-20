@@ -8,7 +8,7 @@ import { LoadSurveys, SurveyModel } from './load-surveys-controller-protocols'
 const makeLoadSurveys = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
     async load (): Promise<SurveyModel[] | null> {
-      return await new Promise(resolve => resolve([{
+      return await Promise.resolve([{
         id: 'valid_id',
         question: 'valid_question',
         answers: [{
@@ -17,7 +17,7 @@ const makeLoadSurveys = (): LoadSurveys => {
 
         }],
         date: new Date()
-      }]))
+      }])
     }
   }
 
@@ -82,7 +82,7 @@ describe('LoadSurveys Controller', () => {
 
   test('Should returns 204 if LoadSurveys returns empty', async () => {
     const { sut, loadSurveysStub } = makeSut()
-    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve([])))
+    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(Promise.resolve([]))
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(noContent())
   })

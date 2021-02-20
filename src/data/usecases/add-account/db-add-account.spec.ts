@@ -5,7 +5,7 @@ import { DbAddAccount } from './db-add-account'
 const makeHasher = (): Hasher => {
   class HasherStub implements Hasher {
     async hash (value: string): Promise<string> {
-      return await new Promise(resolve => resolve('hashed_password'))
+      return await Promise.resolve('hashed_password')
     }
   }
   return new HasherStub()
@@ -20,7 +20,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
         email: 'valid_email@mail.com',
         password: 'hashed_password'
       }
-      return await new Promise(resolve => resolve(fakeAccount))
+      return await Promise.resolve(fakeAccount)
     }
   }
   return new AddAccountRepositoryStub()
@@ -29,7 +29,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     async loadByEmail (email: string): Promise<AccountModel| null> {
-      return await new Promise(resolve => resolve(null))
+      return await Promise.resolve(null)
     }
   }
   return new LoadAccountByEmailRepositoryStub()
@@ -122,12 +122,12 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should return null if LoadAccountByEmailRepository not return null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(new Promise(resolve => resolve({
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve({
       id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email@mail.com',
       password: 'hashed_password'
-    })))
+    }))
     const accountData = makeFakeAccountData()
     const account = await sut.add(accountData)
     expect(account).toEqual(null)

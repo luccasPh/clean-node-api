@@ -6,12 +6,12 @@ import { LoadAccountByToken, AccountModel } from './auth.middleware-protocols'
 const makeLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
     async load (accessToken: string, role?: string): Promise<AccountModel | null> {
-      return await new Promise(resolve => resolve({
+      return await Promise.resolve({
         id: 'valid_id',
         email: 'valid_email@mail.com',
         name: 'valid_name',
         password: 'valid_password'
-      }))
+      })
     }
   }
   return new LoadAccountByTokenStub()
@@ -52,7 +52,7 @@ describe('Auth Middleware', () => {
 
   test('Should returns 403 if LoadAccountByToken returns null', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
-    jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle({
       headers: {
         'x-access-token': 'access_token'

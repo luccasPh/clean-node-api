@@ -5,13 +5,13 @@ import { SaveSurveyResultParams, SaveSurveyResultRepository, SurveyResultModel }
 const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return await new Promise(resolve => resolve({
+      return await Promise.resolve({
         id: 'valid_id',
         accountId: 'any_accountId',
         surveyId: 'any_surveyId',
         answer: 'any_answer',
         date: new Date()
-      }))
+      })
     }
   }
   return new SaveSurveyResultRepositoryStub()

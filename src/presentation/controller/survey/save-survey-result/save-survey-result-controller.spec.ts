@@ -14,7 +14,7 @@ import {
 const makeLoadSurveyById = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel | null> {
-      return await new Promise(resolve => resolve({
+      return await Promise.resolve({
         id: 'valid_id',
         question: 'valid_question',
         answers: [{
@@ -23,7 +23,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 
         }],
         date: new Date()
-      }))
+      })
     }
   }
 
@@ -33,13 +33,13 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return await new Promise(resolve => resolve({
+      return await Promise.resolve({
         id: 'valid_id',
         surveyId: 'survey_id',
         accountId: 'account_id',
         answer: 'valid_answer',
         date: new Date()
-      }))
+      })
     }
   }
 
@@ -91,7 +91,7 @@ describe('SaveSurveyResult Controller', () => {
 
   test('Should returns 403 if LoadSurveyById returns null', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
-    jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(403)
     expect(httpResponse.body).toEqual(new InvalidParamError('surveyId'))

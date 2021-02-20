@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import request from 'supertest'
 import { sign } from 'jsonwebtoken'
 import { Collection } from 'mongodb'
@@ -138,5 +139,39 @@ describe('Survey Routes', () => {
         answer: 'any_answer'
       })
       .expect(403)
+  })
+
+  test('Should return 200 on save survey result with accessToken', async () => {
+    const account = await accountCollection.insertOne({
+      name: 'John Doe',
+      email: 'foo@example.com',
+      password: 'password'
+    })
+    const id = account.ops[0]._id
+    const accessToken = sign({ id }, env.jwtSecretKey)
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+    const survey = await surveyCollection.insertMany([{
+      question: 'any_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer'
+      }, {
+        answer: 'other_answer'
+      }],
+      date: new Date()
+    }])
+    await request(app)
+      .put(`/api/surveys/${survey.ops[0]._id}/results`)
+      .set('x-access-token', accessToken)
+      .send({
+        answer: 'any_answer'
+      })
+      .expect(200)
   })
 })

@@ -6,10 +6,19 @@ const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return await Promise.resolve({
-        id: 'valid_id',
-        accountId: 'any_accountId',
         surveyId: 'any_surveyId',
-        answer: 'any_answer',
+        question: 'an_question',
+        answers: [{
+          image: 'any_image',
+          answer: 'any_answer',
+          count: 10,
+          percent: 8
+        }, {
+          image: 'any_image',
+          answer: 'other_answer',
+          count: 8,
+          percent: 3
+        }],
         date: new Date()
       })
     }
@@ -70,10 +79,19 @@ describe('DbSaveSurveyResult UseCase', () => {
     const surveyResultData = makeSurveyResultData()
     const surveyResult = await sut.save(surveyResultData)
     expect(surveyResult).toEqual({
-      id: 'valid_id',
-      accountId: 'any_accountId',
       surveyId: 'any_surveyId',
-      answer: 'any_answer',
+      question: 'an_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer',
+        count: 10,
+        percent: 8
+      }, {
+        image: 'any_image',
+        answer: 'other_answer',
+        count: 8,
+        percent: 3
+      }],
       date: new Date()
     })
   })

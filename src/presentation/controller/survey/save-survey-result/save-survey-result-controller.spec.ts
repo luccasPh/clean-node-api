@@ -34,10 +34,19 @@ const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return await Promise.resolve({
-        id: 'valid_id',
-        surveyId: 'survey_id',
-        accountId: 'account_id',
-        answer: 'valid_answer',
+        surveyId: 'any_surveyId',
+        question: 'an_question',
+        answers: [{
+          image: 'any_image',
+          answer: 'any_answer',
+          count: 10,
+          percent: 8
+        }, {
+          image: 'any_image',
+          answer: 'other_answer',
+          count: 8,
+          percent: 3
+        }],
         date: new Date()
       })
     }
@@ -149,10 +158,19 @@ describe('SaveSurveyResult Controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual({
-      id: 'valid_id',
-      surveyId: 'survey_id',
-      accountId: 'account_id',
-      answer: 'valid_answer',
+      surveyId: 'any_surveyId',
+      question: 'an_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer',
+        count: 10,
+        percent: 8
+      }, {
+        image: 'any_image',
+        answer: 'other_answer',
+        count: 8,
+        percent: 3
+      }],
       date: new Date()
     })
   })

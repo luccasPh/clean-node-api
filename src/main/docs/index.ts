@@ -1,6 +1,6 @@
 import { loginPath } from './paths/login'
-import { accountSchema } from './schemas/account'
-import { loginSchema } from './schemas/login'
+import { badRequest, unauthorized, serverError } from './components'
+import { accountSchema, loginSchema, errorSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -8,6 +8,11 @@ export default {
     title: 'Clean Node API',
     description: 'API para realizar enquetes entre programadores',
     version: '1.0.0'
+  },
+
+  license: {
+    name: 'MIT',
+    url: 'https://opensource.org/licenses/MIT'
   },
 
   servers: [{
@@ -24,7 +29,14 @@ export default {
 
   schemas: {
     login: loginSchema,
-    account: accountSchema
+    account: accountSchema,
+    error: errorSchema
+  },
+
+  components: {
+    badRequest,
+    unauthorized,
+    serverError
   }
 
 }

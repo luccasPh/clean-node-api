@@ -11,7 +11,8 @@ import {
   signUpSchema,
   addSurveySchema,
   saveSurveyResultSchema,
-  surveyResultSchema
+  surveyResultSchema,
+  surveyResultAnswerSchema
 } from './schemas'
 
 export default {
@@ -54,6 +55,7 @@ export default {
     surveyAnswer: surveyAnswerSchema,
     addSurvey: addSurveySchema,
     saveSurveyResult: saveSurveyResultSchema,
+    saveSurveyResultAnswer: surveyResultAnswerSchema,
     surveyResult: surveyResultSchema
   },
 

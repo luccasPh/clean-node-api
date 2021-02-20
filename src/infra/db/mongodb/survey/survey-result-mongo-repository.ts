@@ -4,7 +4,6 @@ import { SaveSurveyResultRepository } from '@/data/protocols/db/survey/save-surv
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SaveSurveyResultParams } from '@/domain/usecases/survey/save-survey-result'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { SurveyModel } from '@/domain/models/survey'
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
   async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
@@ -32,10 +31,10 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
     const survey = await surveyCollection.findOne({ _id: new ObjectId(surveyId) })
     const surveyResultTotal = await surveyResultCollection.countDocuments({ surveyId: new ObjectId(surveyId) })
 
-    const { question, date, answers } = survey as SurveyModel
+    const { question, date, answers } = survey
 
     await Promise.all(
-      answers.map(async (object) => {
+      answers.map(async (object: { answer: any }) => {
         const count = await surveyResultCollection.countDocuments({
           $and: [
             { surveyId: new ObjectId(surveyId) },
@@ -49,11 +48,13 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
         return object
       })
     )
-
+    const sortedAnswers = answers.sort(
+      (a: { percent: number }, b: { percent: number }) => (a.percent > b.percent ? -1 : 1)
+    )
     const surveyResult = {
       surveyId,
       question,
-      answers,
+      answers: sortedAnswers,
       date
     }
     return surveyResult as SurveyResultModel

@@ -66,25 +66,24 @@ describe('DbLoadSurveyResult UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  // test('Should return SurveyResult on success', async () => {
-  //   const { sut } = makeSut()
-  //   const surveyResultData = makeSurveyResultData()
-  //   const surveyResult = await sut.save(surveyResultData)
-  //   expect(surveyResult).toEqual({
-  //     surveyId: 'any_surveyId',
-  //     question: 'an_question',
-  //     answers: [{
-  //       image: 'any_image',
-  //       answer: 'any_answer',
-  //       count: 10,
-  //       percent: 8
-  //     }, {
-  //       image: 'any_image',
-  //       answer: 'other_answer',
-  //       count: 8,
-  //       percent: 3
-  //     }],
-  //     date: new Date()
-  //   })
-  // })
+  test('Should return SurveyResult on success', async () => {
+    const { sut } = makeSut()
+    const surveyResult = await sut.load('any_surveyId')
+    expect(surveyResult).toEqual({
+      surveyId: 'any_surveyId',
+      question: 'an_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer',
+        count: 10,
+        percent: 8
+      }, {
+        image: 'any_image',
+        answer: 'other_answer',
+        count: 8,
+        percent: 3
+      }],
+      date: new Date()
+    })
+  })
 })

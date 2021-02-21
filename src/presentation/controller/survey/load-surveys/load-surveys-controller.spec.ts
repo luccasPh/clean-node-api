@@ -7,7 +7,7 @@ import { LoadSurveys, SurveyModel } from './load-surveys-controller-protocols'
 
 const makeLoadSurveys = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
-    async load (): Promise<SurveyModel[] | null> {
+    async load (): Promise<SurveyModel[]> {
       return await Promise.resolve([{
         id: 'valid_id',
         question: 'valid_question',

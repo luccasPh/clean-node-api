@@ -5,7 +5,7 @@ import { LoadSurveysRepository, SurveyModel } from './db-load-surveys-protocols'
 
 const makeLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    async loadAll (): Promise<SurveyModel[] | null> {
+    async loadAll (): Promise<SurveyModel[]> {
       return await Promise.resolve([{
         id: 'valid_id',
         question: 'valid_question',

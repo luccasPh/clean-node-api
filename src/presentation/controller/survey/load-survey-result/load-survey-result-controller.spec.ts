@@ -128,25 +128,25 @@ describe('LoadSurveyResult Controller', () => {
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  // test('Should returns 200 on success', async () => {
-  //   const { sut } = makeSut()
-  //   const httpResponse = await sut.handle(makeFakeRequest())
-  //   expect(httpResponse.statusCode).toBe(200)
-  //   expect(httpResponse.body).toEqual({
-  //     surveyId: 'any_surveyId',
-  //     question: 'an_question',
-  //     answers: [{
-  //       image: 'any_image',
-  //       answer: 'any_answer',
-  //       count: 10,
-  //       percent: 8
-  //     }, {
-  //       image: 'any_image',
-  //       answer: 'other_answer',
-  //       count: 8,
-  //       percent: 3
-  //     }],
-  //     date: new Date()
-  //   })
-  // })
+  test('Should returns 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      surveyId: 'any_surveyId',
+      question: 'an_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer',
+        count: 10,
+        percent: 8
+      }, {
+        image: 'any_image',
+        answer: 'other_answer',
+        count: 8,
+        percent: 3
+      }],
+      date: new Date()
+    })
+  })
 })

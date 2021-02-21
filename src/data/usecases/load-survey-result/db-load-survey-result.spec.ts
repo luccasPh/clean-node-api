@@ -5,7 +5,7 @@ import { LoadSurveyByIdRepository, LoadSurveyResultRepository, SurveyModel, Surv
 
 const makeLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
   class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel | null> {
       return await Promise.resolve({
         surveyId: 'any_surveyId',
         question: 'an_question',
@@ -80,6 +80,13 @@ describe('DbLoadSurveyResult UseCase', () => {
     const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
     await sut.load('any_surveyId')
     expect(loadBySurveyIdSpy).toHaveBeenCalledWith('any_surveyId')
+  })
+
+  test('Should return null if LoadSurveyResultRepository returns null', async () => {
+    const { sut, loadSurveyByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const surveyResult = await sut.load('any_surveyId')
+    expect(surveyResult).toBeNull()
   })
 
   test('Should throw if LoadSurveyResultRepository throws', async () => {

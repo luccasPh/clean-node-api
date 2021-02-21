@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/presentation/errors'
+import { InvalidParamError, ServerError } from '@/presentation/errors'
 import MockDate from 'mockdate'
 
 import { LoadSurveyResultController } from './load-survey-result-controller'
@@ -102,15 +102,15 @@ describe('LoadSurveyResult Controller', () => {
     expect(httpResponse.body).toEqual(new InvalidParamError('surveyId'))
   })
 
-  // test('Should returns 500 if LoadSurveyById throws', async () => {
-  //   const { sut, loadSurveyByIdStub } = makeSut()
-  //   jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(() => {
-  //     throw new Error()
-  //   })
-  //   const httpResponse = await sut.handle(makeFakeRequest())
-  //   expect(httpResponse.statusCode).toBe(500)
-  //   expect(httpResponse.body).toEqual(new ServerError())
-  // })
+  test('Should returns 500 if LoadSurveyById throws', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut()
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
 
   // test('Should returns 403 if an invalid answer is provided', async () => {
   //   const { sut } = makeSut()

@@ -29,13 +29,17 @@ const makeLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
 
 const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyModel | null> {
+    async loadById (id: string): Promise<SurveyModel> {
       return await Promise.resolve({
         id: 'valid_id',
         question: 'valid_question',
         answers: [{
           image: 'valid_image',
-          answer: 'valid_answer'
+          answer: 'valid_answer_1'
+
+        }, {
+          image: 'valid_image',
+          answer: 'valid_answer_2'
 
         }],
         date: new Date()
@@ -114,5 +118,27 @@ describe('DbLoadSurveyResult UseCase', () => {
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
     await sut.load('any_surveyId')
     expect(loadByIdSpy).toHaveBeenCalledWith('any_surveyId')
+  })
+
+  test('Should return surveyResultModel with all answers with count 0 if LoadSurveyResultRepository returns null', async () => {
+    const { sut, loadSurveyResultRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
+    const surveyResult = await sut.load('any_surveyId')
+    expect(surveyResult).toEqual({
+      surveyId: 'valid_id',
+      question: 'valid_question',
+      answers: [{
+        image: 'valid_image',
+        answer: 'valid_answer_1',
+        count: 0,
+        percent: 0
+      }, {
+        image: 'valid_image',
+        answer: 'valid_answer_2',
+        count: 0,
+        percent: 0
+      }],
+      date: new Date()
+    })
   })
 })

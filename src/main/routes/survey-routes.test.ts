@@ -180,4 +180,35 @@ describe('Survey Routes', () => {
       .get('/api/surveys/any_id/results')
       .expect(403)
   })
+
+  test('Should return 200 on load survey result with accessToken', async () => {
+    const account = await accountCollection.insertOne({
+      name: 'John Doe',
+      email: 'foo@example.com',
+      password: 'password'
+    })
+    const id = account.ops[0]._id
+    const accessToken = sign({ id }, env.jwtSecretKey)
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+    const survey = await surveyCollection.insertOne({
+      question: 'any_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer'
+      }, {
+        answer: 'other_answer'
+      }],
+      date: new Date()
+    })
+    await request(app)
+      .get(`/api/surveys/${survey.ops[0]._id}/results`)
+      .set('x-access-token', accessToken)
+      .expect(200)
+  })
 })

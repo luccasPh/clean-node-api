@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/luccasPh/clean-node-api.svg?branch=master)](https://travis-ci.org/luccasPh/clean-node-api)
-[![Coverage Status](https://coveralls.io/repos/github/luccasPh/clean-node-api/badge.svg?branch=master)](https://coveralls.io/github/luccasPh/clean-node-api?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/luccasPh/clean-node-api/badge.svg)](https://coveralls.io/github/luccasPh/clean-node-api)
 
 # **Clean Node API**
 

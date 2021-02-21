@@ -22,7 +22,7 @@ export class SurveyMongoRepository implements
     return MongoHelper.mapArray(surveys)
   }
 
-  async loadById (id: string): Promise<SurveyModel | null> {
+  async loadById (id: string): Promise<SurveyModel> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
     return survey && MongoHelper.mapObject(survey)

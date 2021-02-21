@@ -55,6 +55,6 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
       answers: sortedAnswers,
       date
     }
-    return surveyResult as SurveyResultModel
+    return surveyResult as SurveyResultModel ?? null
   }
 }

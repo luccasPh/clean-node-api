@@ -1,6 +1,6 @@
 import { Validation } from '@/presentation/protocols/validation'
 import { EmailValidator } from '@/presentation/protocols'
-import { makeLoginValidation } from '@/main/factories/controllers/auth/login/login-validation-factory.ts'
+import { makeLoginValidation } from '@/main/factories/controllers/auth/login/login-validation-factory'
 import {
   RequiredFieldValidation,
   EmailValidation,

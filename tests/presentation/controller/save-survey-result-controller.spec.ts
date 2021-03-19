@@ -3,7 +3,7 @@ import MockDate from 'mockdate'
 import { InvalidParamError, ServerError } from '@/presentation/errors'
 import { HttpRequest } from '@/presentation/protocols'
 import { LoadSurveyById, SaveSurveyResult, SaveSurveyResultParams, SurveyResultModel } from './survey/load-survey-result/load-survey-result-controller-protocols'
-import { SurveyModel } from '@/presentation/controller/survey/load-surveys/load-surveys-controller-protocols.ts'
+import { SurveyModel } from '@/presentation/controller/survey/load-surveys/load-surveys-controller-protocols'
 import { SaveSurveyResultController } from '@/presentation/controller/survey/save-survey-result/save-survey-result-controller'
 
 const makeLoadSurveyById = (): LoadSurveyById => {

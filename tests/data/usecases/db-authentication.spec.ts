@@ -1,6 +1,6 @@
 import { Encrypter } from '@/data/protocols/criptography/encrypter'
 import { HashCompare } from '@/data/protocols/criptography/hash-compare'
-import { DbAuthentication } from '@/data/usecases/authentication/db-authentication.ts'
+import { DbAuthentication } from '@/data/usecases/authentication/db-authentication'
 import {
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository,

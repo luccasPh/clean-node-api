@@ -3,7 +3,6 @@ version: "3"
 services:
   mongodb:
     image: mongo:4
-    restart: always
     volumes:
       - ./mongo/data:/data/db
     ports:
@@ -11,7 +10,6 @@ services:
 
   api:
     build: .
-    restart: always
     command: bash -c "yarn install --prod && yarn debug"
     volumes:
       - ./dist/:/usr/src/clean-node-api/dist

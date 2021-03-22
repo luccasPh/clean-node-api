@@ -51,6 +51,9 @@ export const surveysPath = {
       204: {
         description: 'Sucesso'
       },
+      400: {
+        $ref: '#/components/badRequest'
+      },
       401: {
         $ref: '#/components/unauthorized'
       },

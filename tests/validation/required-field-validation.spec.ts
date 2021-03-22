@@ -24,13 +24,16 @@ describe('RequiredFields Validation', () => {
     const { sut, schema } = makeSut()
     const isValidSpy = jest.spyOn(schema, 'validate')
     const input = {
-      name: 'John Doe',
-      email: 'foo@example.com',
-      password: 'password',
-      passwordConfirmation: 'password'
+      anyField: 'anyField'
     }
     await sut.validate(input)
     expect(isValidSpy).toHaveBeenCalledWith(input)
+  })
+
+  test('Should return a MissingParamError if schema validation fails', async () => {
+    const { sut } = makeSut()
+    const error = await sut.validate({})
+    expect(error).toEqual(new MissingParamError('anyField'))
   })
 
   test('Should return a MissingParamError if schema validation fails', async () => {

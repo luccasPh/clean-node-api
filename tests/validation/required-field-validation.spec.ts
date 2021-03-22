@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 
 import { RequiredFieldsValidation } from '@/validation/validators'
+import { MissingParamError } from '@/presentation/errors'
 
 interface SutTypes {
   sut: RequiredFieldsValidation
@@ -9,10 +10,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const schema = Yup.object().shape({
-    name: Yup.string().required('name is a required field'),
-    email: Yup.string().required('email is a required field'),
-    password: Yup.string().min(6, 'password minimum 6 characters'),
-    passwordConfirmation: Yup.string().required('password confirmation is a required field')
+    anyField: Yup.string().required('anyField').min(6, 'anyField')
   })
   const sut = new RequiredFieldsValidation(schema)
   return {
@@ -22,16 +20,22 @@ const makeSut = (): SutTypes => {
 }
 
 describe('RequiredFields Validation', () => {
-  test('Should calls schema validation with correct values', () => {
+  test('Should calls schema validation with correct values', async () => {
     const { sut, schema } = makeSut()
-    const isValidSpy = jest.spyOn(schema, 'isValid')
+    const isValidSpy = jest.spyOn(schema, 'validate')
     const input = {
       name: 'John Doe',
       email: 'foo@example.com',
       password: 'password',
       passwordConfirmation: 'password'
     }
-    sut.validate(input)
+    await sut.validate(input)
     expect(isValidSpy).toHaveBeenCalledWith(input)
+  })
+
+  test('Should return a MissingParamError if schema validation fails', async () => {
+    const { sut } = makeSut()
+    const error = await sut.validate({})
+    expect(error).toEqual(new MissingParamError('anyField'))
   })
 })

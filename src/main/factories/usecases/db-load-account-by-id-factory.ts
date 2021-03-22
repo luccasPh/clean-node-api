@@ -5,7 +5,7 @@ import { LoadAccountById } from '@/domain/usecases/account/load-account-by-id'
 import env from '@/main/config/env'
 
 export const makeDbLoadAccountById = (): LoadAccountById => {
-  const jwtAdapter = new JwtAdapter(env.jwtSecretKey)
+  const jwtAdapter = new JwtAdapter(env.jwtSecretKey, env.jwtExpirationTime)
   const accountRepository = new AccountMongoRepository()
   return new DbLoadAccountById(jwtAdapter, accountRepository)
 }

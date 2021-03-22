@@ -25,19 +25,19 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Email Validation', () => {
-  test('Should call EmailValidator with correct email', () => {
+  test('Should call EmailValidator with correct email', async () => {
     const { sut, emailValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
-    sut.validate({ email: 'test@example.com' })
+    await sut.validate({ email: 'test@example.com' })
     expect(isValidSpy).toHaveBeenCalledWith('test@example.com')
   })
 
-  test('Should throw EmailValidator throws', () => {
+  test('Should throw EmailValidator throws', async () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
       throw new Error()
     })
 
-    expect(sut.validate).toThrow()
+    await expect(sut.validate).rejects.toThrow()
   })
 })

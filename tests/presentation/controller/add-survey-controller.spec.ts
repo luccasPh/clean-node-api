@@ -7,7 +7,7 @@ import { AddSurvey, AddSurveyParams } from '@/presentation/controller/survey/add
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Error | null {
+    async validate (input: any): Promise<Error | null> {
       return null
     }
   }
@@ -71,7 +71,7 @@ describe('AddSurvey Controller', () => {
 
   test('Should returns 400 if validation fails', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)

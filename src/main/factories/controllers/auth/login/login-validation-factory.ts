@@ -1,15 +1,15 @@
-import { Validation } from '@/presentation/protocols/validation'
+import * as Yup from 'yup'
+
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
+import { Validation } from '@/presentation/protocols'
 import {
   EmailValidation,
-  RequiredFieldValidation, ValidationComposite
+  RequiredFieldsValidation, ValidationComposite
 } from '@/validation/validators'
 
-export const makeLoginValidation = (): ValidationComposite => {
+export const makeLoginValidation = (schema: Yup.AnySchema): ValidationComposite => {
   const validation: Validation[] = []
-  for (const field of ['email', 'password']) {
-    validation.push(new RequiredFieldValidation(field))
-  }
+  validation.push(new RequiredFieldsValidation(schema))
   validation.push(new EmailValidation('email', new EmailValidatorAdapter()))
   return new ValidationComposite(validation)
 }

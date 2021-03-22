@@ -1,10 +1,10 @@
-import { Validation } from '@/presentation/protocols/validation'
-import { RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
+import * as Yup from 'yup'
 
-export const makeAddSurveyValidation = (): ValidationComposite => {
+import { RequiredFieldsValidation, ValidationComposite } from '@/validation/validators'
+import { Validation } from '@/presentation/protocols'
+
+export const makeAddSurveyValidation = (schema: Yup.AnySchema): ValidationComposite => {
   const validation: Validation[] = []
-  for (const field of ['question', 'answers']) {
-    validation.push(new RequiredFieldValidation(field))
-  }
+  validation.push(new RequiredFieldsValidation(schema))
   return new ValidationComposite(validation)
 }

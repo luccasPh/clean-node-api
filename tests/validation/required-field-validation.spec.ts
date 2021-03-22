@@ -41,4 +41,10 @@ describe('RequiredFields Validation', () => {
     const error = await sut.validate({ anyField: 'any' })
     expect(error).toEqual(new InvalidParamError('anyField'))
   })
+
+  test('Should not return if validation succeeds', async () => {
+    const { sut } = makeSut()
+    const error = await sut.validate({ anyField: 'anyField' })
+    expect(error).toBeFalsy()
+  })
 })

@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 import { RequiredFieldsValidation } from '@/validation/validators'
-import { MissingParamError } from '@/presentation/errors'
+import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 
 interface SutTypes {
   sut: RequiredFieldsValidation
@@ -36,9 +36,9 @@ describe('RequiredFields Validation', () => {
     expect(error).toEqual(new MissingParamError('anyField'))
   })
 
-  test('Should return a MissingParamError if schema validation fails', async () => {
+  test('Should return a InvalidParamError if schema validation fails', async () => {
     const { sut } = makeSut()
-    const error = await sut.validate({})
-    expect(error).toEqual(new MissingParamError('anyField'))
+    const error = await sut.validate({ anyField: 'any' })
+    expect(error).toEqual(new InvalidParamError('anyField'))
   })
 })

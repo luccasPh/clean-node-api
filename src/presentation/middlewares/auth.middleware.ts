@@ -1,5 +1,7 @@
+import { JsonWebTokenError } from 'jsonwebtoken'
+
 import { AccessDeniedError } from '@/presentation/errors'
-import { forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { Middleware } from '@/presentation/protocols/middleware'
 import { LoadAccountById, HttpRequest, HttpResponse } from './auth.middleware-protocols'
 
@@ -23,7 +25,11 @@ export class AuthMiddleware implements Middleware {
       }
       return forbidden(new AccessDeniedError())
     } catch (error) {
-      return serverError(error)
+      if (error instanceof JsonWebTokenError) {
+        return unauthorized()
+      } else {
+        return serverError(error)
+      }
     }
   }
 }

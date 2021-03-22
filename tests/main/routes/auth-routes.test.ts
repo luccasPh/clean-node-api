@@ -23,7 +23,7 @@ describe('Auth Routes', () => {
     await accountCollection.deleteMany({})
   })
 
-  test('Should return 200 on signup success', async () => {
+  test('Should return 204 on signup success', async () => {
     await request(app)
       .post('/api/signup')
       .send({
@@ -32,7 +32,7 @@ describe('Auth Routes', () => {
         password: 'password',
         passwordConfirmation: 'password'
       })
-      .expect(200)
+      .expect(204)
   })
 
   test('Should return 200 on login success', async () => {

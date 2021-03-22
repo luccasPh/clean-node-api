@@ -18,6 +18,9 @@ export const surveysPath = {
           }
         }
       },
+      401: {
+        $ref: '#/components/unauthorized'
+      },
       403: {
         $ref: '#/components/forbidden'
       },
@@ -47,6 +50,9 @@ export const surveysPath = {
     responses: {
       204: {
         description: 'Sucesso'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
       },
       403: {
         $ref: '#/components/forbidden'

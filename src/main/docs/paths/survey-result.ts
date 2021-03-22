@@ -37,6 +37,9 @@ export const surveyResultPath = {
         }
       },
 
+      401: {
+        $ref: '#/components/unauthorized'
+      },
       403: {
         $ref: '#/components/forbidden'
       },
@@ -73,6 +76,9 @@ export const surveyResultPath = {
         }
       },
 
+      401: {
+        $ref: '#/components/unauthorized'
+      },
       403: {
         $ref: '#/components/forbidden'
       },

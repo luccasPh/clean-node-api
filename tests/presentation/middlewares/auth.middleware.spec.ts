@@ -1,7 +1,8 @@
-import { forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors'
 import { AuthMiddleware } from '@/presentation/middlewares/auth.middleware'
 import { LoadAccountById, AccountModel } from '@/presentation/middlewares/auth.middleware-protocols'
+import { JsonWebTokenError } from 'jsonwebtoken'
 
 const makeLoadAccountById = (): LoadAccountById => {
   class LoadAccountByIdStub implements LoadAccountById {
@@ -69,6 +70,19 @@ describe('Auth Middleware', () => {
       }
     })
     expect(httpResponse).toEqual(ok({ accountId: 'valid_id' }))
+  })
+
+  test('Should returns 401 if LoadAccountById throws a JsonWebTokenError', async () => {
+    const { sut, loadAccountByIdStub } = makeSut()
+    jest.spyOn(loadAccountByIdStub, 'load').mockImplementationOnce(() => {
+      throw new JsonWebTokenError('invalid token')
+    })
+    const httpResponse = await sut.handle({
+      headers: {
+        'x-access-token': 'access_token'
+      }
+    })
+    expect(httpResponse).toEqual(unauthorized())
   })
 
   test('Should returns 500 if LoadAccountById throws', async () => {

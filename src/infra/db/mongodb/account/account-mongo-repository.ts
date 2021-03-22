@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb'
+
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
-import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
+import { LoadAccountByIdRepository } from '@/data/protocols/db/account/load-account-by-id-repository'
 import { LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/usecases/authentication/db-authentication-protocols'
 import { AccountModel } from '@/domain/models/account'
 import { AddAccountParams } from '@/domain/usecases/account/add-account'
@@ -9,7 +11,7 @@ export class AccountMongoRepository implements
   AddAccountRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository,
-  LoadAccountByTokenRepository {
+  LoadAccountByIdRepository {
   async add (accountData: AddAccountParams): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(accountData)
@@ -22,10 +24,10 @@ export class AccountMongoRepository implements
     return MongoHelper.mapObject(account)
   }
 
-  async loadByToken (token: string, role?: string): Promise<AccountModel | null> {
+  async loadById (id: string, role?: string): Promise<AccountModel | null> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne({
-      accessToken: token,
+      _id: new ObjectId(id),
       $or: [{
         role
       }, {

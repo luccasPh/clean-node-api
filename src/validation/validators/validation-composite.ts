@@ -7,9 +7,9 @@ export class ValidationComposite implements Validation {
     this.validations = validations
   }
 
-  validate (input: any): Error | null {
+  async validate (input: any): Promise<Error | null> {
     for (const validation of this.validations) {
-      const error = validation.validate(input)
+      const error = await validation.validate(input)
       if (error) {
         return error
       }

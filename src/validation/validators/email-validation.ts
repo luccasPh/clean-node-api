@@ -11,7 +11,7 @@ export class EmailValidation implements Validation {
     this.emailValidator = emailValidator
   }
 
-  validate (input: any): Error | null {
+  async validate (input: any): Promise<Error | null> {
     const isValid = this.emailValidator.isValid(input[this.fieldName])
     if (!isValid) {
       return new InvalidParamError(this.fieldName)
